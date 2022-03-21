@@ -6,11 +6,9 @@ package pClient
 import "C"
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"time"
 
 	pusherLib "github.com/pusher/pusher-http-go/v5"
 )
@@ -52,32 +50,32 @@ type Message struct {
 	Message string
 }
 
-func main() {
-	// server
-	go func() {
-		http.HandleFunc("/pusher/auth", auth)
-		http.ListenAndServe(":8090", nil)
-	}()
-	go func() {
-		time.Sleep(5 * time.Second)
-		send()
-	}()
+// func main() {
+// 	// server
+// 	go func() {
+// 		http.HandleFunc("/pusher/auth", auth)
+// 		http.ListenAndServe(":8090", nil)
+// 	}()
+// 	go func() {
+// 		time.Sleep(5 * time.Second)
+// 		send()
+// 	}()
 
-	// bridge
-	go func() {
-		for msg := range Pusher.Messages {
-			MsgStruct := &Message{}
-			json.Unmarshal([]byte(msg), MsgStruct)
-			fmt.Println(MsgStruct)
-		}
-	}()
-	Pusher.StartPusher(
-		"3d41671bd9378ccdd519",              //pusher env id (this is dev)
-		"http://127.0.0.1:8090/pusher/auth", //authentication endpoint in capi
-		"private-my-channel",                // channel name
-		"auth",                              // user auth token issued by Compose
-	)
-}
+// 	// bridge
+// 	go func() {
+// 		for msg := range Pusher.Messages {
+// 			MsgStruct := &Message{}
+// 			json.Unmarshal([]byte(msg), MsgStruct)
+// 			fmt.Println(MsgStruct)
+// 		}
+// 	}()
+// 	Pusher.StartPusher(
+// 		"3d41671bd9378ccdd519",              //pusher env id (this is dev)
+// 		"http://127.0.0.1:8090/pusher/auth", //authentication endpoint in capi
+// 		"private-my-channel",                // channel name
+// 		"auth",                              // user auth token issued by Compose
+// 	)
+// }
 
 // ---------- Go Server ----------
 
