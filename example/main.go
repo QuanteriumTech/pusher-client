@@ -19,16 +19,6 @@ type Message struct {
 }
 
 func main() {
-	// server
-	go func() {
-		http.HandleFunc("/pusher/auth", auth)
-		http.ListenAndServe(":8090", nil)
-	}()
-	go func() {
-		time.Sleep(5 * time.Second)
-		send()
-	}()
-
 	// bridge
 	go func() {
 		for msg := range pClient.Pusher.Messages {
@@ -57,6 +47,14 @@ func init() {
 		Cluster: "eu",
 		Secure:  true,
 	}
+	go func() {
+		http.HandleFunc("/pusher/auth", auth)
+		http.ListenAndServe(":8090", nil)
+	}()
+	go func() {
+		time.Sleep(5 * time.Second)
+		send()
+	}()
 }
 
 func auth(res http.ResponseWriter, req *http.Request) {
@@ -67,13 +65,10 @@ func auth(res http.ResponseWriter, req *http.Request) {
 	// params.auth == user.session.token && params.channel.getUserIDFromChannelName == session.user.id
 
 	// part 2: Get a pusher auth token
-	fmt.Println("params: ", string(params))
 	response, err := pusherClient.AuthenticatePrivateChannel(params)
 
 	if err != nil {
-
 		fmt.Println("error: ", err)
-		// panic(err)
 	}
 
 	fmt.Fprintf(res, string(response))
