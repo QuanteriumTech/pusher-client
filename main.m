@@ -11,8 +11,8 @@
 		return objc_getAssociatedObject(self, &key);
 	}
  	- (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withAuthOperation:(PTPusherChannelAuthorizationOperation *)operation {
+		NSLog(@"mutating auth");
 		 [operation.mutableURLRequest setValue:pusher.userAuth forHTTPHeaderField:@"Authorization"];
-	 	NSLog(@"mutating auth");
 	}
 @end
 

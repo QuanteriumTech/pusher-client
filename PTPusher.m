@@ -143,6 +143,7 @@ NSURL *PTPusherConnectionURL(NSString *host, NSString *key, NSString *clientID, 
 #pragma clang diagnostic push
 #pragma clang diagnostic pop
     if ([strongSelf.delegate respondsToSelector:@selector(pusher:willAuthorizeChannel:withAuthOperation:)]) {
+      NSLog(@"DOES IMPLEMENT");
       [strongSelf.delegate pusher:strongSelf willAuthorizeChannel:channel withAuthOperation:op];
     }
   }];
