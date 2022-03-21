@@ -1,4 +1,4 @@
-module pusher-client
+module github.com/QuanteriumTech/pusher-client
 
 go 1.17
 
