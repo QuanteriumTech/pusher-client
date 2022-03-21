@@ -9,6 +9,6 @@ extern void receiveMsg(char* msg);
 void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char * userAuth);
 
 @interface PTPusher (PTPusher)
-	@property NSString *userAuth;
+	@property (strong, nonatomic) NSString *userAuth;
  	- (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withAuthOperation:(PTPusherChannelAuthorizationOperation *)operation;
 @end

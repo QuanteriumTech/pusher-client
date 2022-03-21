@@ -1,16 +1,19 @@
 #import "main.h"
+#import <objc/runtime.h>
 
 @implementation PTPusher (PTPusher)
-- (NSString *)userAuth {
-    return self.userAuth;
-}
-- (void)setUserAuth:(NSString *)userAuth {
-    self.userAuth = userAuth;
-}
- - (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withAuthOperation:(PTPusherChannelAuthorizationOperation *)operation {
-	 [operation.mutableURLRequest setValue:pusher.userAuth forHTTPHeaderField:@"Authorization"];
-	 NSLog(@"mutating auth");
-}
+	NSString const *key = @"my.very.unique.key";
+	- (void)setUserAuth:(NSString *)userAuth
+	{
+    	objc_setAssociatedObject(self, &key, userAuth, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	- (NSString *) userAuth {
+		return objc_getAssociatedObject(self, &key);
+	}
+ 	- (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withAuthOperation:(PTPusherChannelAuthorizationOperation *)operation {
+		 [operation.mutableURLRequest setValue:pusher.userAuth forHTTPHeaderField:@"Authorization"];
+	 	NSLog(@"mutating auth");
+	}
 @end
 
 void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char * userAuth) {
