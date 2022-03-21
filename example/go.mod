@@ -3,11 +3,11 @@ module example
 go 1.17
 
 require (
-	github.com/QuanteriumTech/pusher-client v0.0.0-20220321165720-1f59245e728d
+	github.com/QuanteriumTech/pusher-client v0.0.0-20220321172546-365b95a25698
 	github.com/pusher/pusher-http-go/v5 v5.0.0
 )
 
 require (
-	golang.org/x/crypto v0.0.0-20220315160706-3147a52a75dd // indirect
-	golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1 // indirect
+	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899 // indirect
+	golang.org/x/sys v0.0.0-20190412213103-97732733099d // indirect
 )
