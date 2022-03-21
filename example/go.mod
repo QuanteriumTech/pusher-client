@@ -3,7 +3,7 @@ module example
 go 1.17
 
 require (
-	github.com/QuanteriumTech/pusher-client v0.0.0-20220321172546-365b95a25698
+	github.com/QuanteriumTech/pusher-client v0.0.0-20220321184809-6cd6a2c26850
 	github.com/pusher/pusher-http-go/v5 v5.0.0
 )
 

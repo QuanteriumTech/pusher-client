@@ -1,6 +1,12 @@
 #import "main.h"
 
 @implementation PTPusher (PTPusher)
+- (NSString *)userAuth {
+    return self.userAuth;
+}
+- (void)setUserAuth:(NSString *)userAuth {
+    self.userAuth = userAuth;
+}
  - (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withAuthOperation:(PTPusherChannelAuthorizationOperation *)operation {
 	 [operation.mutableURLRequest setValue:pusher.userAuth forHTTPHeaderField:@"Authorization"];
 	 NSLog(@"mutating auth");
