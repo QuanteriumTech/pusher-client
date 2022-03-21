@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"Pusher"
+	pClient "github.com/QuanteriumTech/pusher-client"
 
 	pusherLib "github.com/pusher/pusher-http-go/v5"
 )
@@ -31,13 +31,13 @@ func main() {
 
 	// bridge
 	go func() {
-		for msg := range Pusher.Messages {
+		for msg := range pClient.Pusher.Messages {
 			MsgStruct := &Message{}
 			json.Unmarshal([]byte(msg), MsgStruct)
 			fmt.Println(MsgStruct)
 		}
 	}()
-	Pusher.StartPusher(
+	pClient.Pusher.StartPusher(
 		"3d41671bd9378ccdd519",              //pusher env id (this is dev)
 		"http://127.0.0.1:8090/pusher/auth", //authentication endpoint in capi
 		"private-my-channel",                // channel name
