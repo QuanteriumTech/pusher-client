@@ -1,7 +1,7 @@
 package pClient
 
 //#cgo CFLAGS: -x objective-c -fobjc-arc
-//#cgo LDFLAGS: -lobjc -framework Foundation -framework CoreServices -framework Security
+//#cgo LDFLAGS: -lobjc -framework Foundation -framework CoreServices -framework Security -libPusher
 //#import <main.h>
 import "C"
 
