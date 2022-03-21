@@ -2,18 +2,18 @@
 
 @implementation PTPusher (PTPusher)
  - (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withAuthOperation:(PTPusherChannelAuthorizationOperation *)operation {
-  [operation.mutableURLRequest setValue:@"some-authentication-token" forHTTPHeaderField:@"Authorization"];
+	 [operation.mutableURLRequest setValue:pusher.userAuth forHTTPHeaderField:@"Authorization"];
+	 NSLog(@"mutating auth");
 }
 @end
 
 void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char * userAuth) {
 	NSString * key =  [NSString stringWithUTF8String:pusherKey];
-	NSString * authEnd =  [NSString stringWithUTF8String:authEndpoint];
 	NSString * chan =  [NSString stringWithUTF8String:channelName];
-	NSString * auth =  [NSString stringWithUTF8String:userAuth];
 
 	PTPusher * pusher = [PTPusher pusherWithKey:key delegate:pusher encrypted:YES cluster:@"eu"];
-	pusher.authorizationURL = [NSURL URLWithString:authEnd];
+	pusher.authorizationURL = [NSURL URLWithString:[NSString stringWithUTF8String:authEndpoint]];
+	pusher.userAuth = [NSString stringWithUTF8String:userAuth];
 	
 	PTPusherChannel *channel = [pusher subscribeToChannelNamed:chan];
 
