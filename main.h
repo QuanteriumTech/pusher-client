@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
-#import <PTPusher.h>
-#import <PTPusherChannel.h>
-#import <PTPusherEvent.h>
-#import <PTPusherEventDispatcher.h>
-#import <PTPusherChannelServerBasedAuthorization.h>
+#import <libPusher/PTPusher.h>
+#import <libPusher/PTPusherChannel.h>
+#import <libPusher/PTPusherEvent.h>
+#import <libPusher/PTPusherEventDispatcher.h>
+#import <libPusher/PTPusherChannelServerBasedAuthorization.h>
 
 extern void receiveMsg(char* msg);
 void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char * userAuth);
