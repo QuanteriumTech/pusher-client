@@ -1,7 +1,7 @@
 #import "main.h"
 #import <objc/runtime.h>
 
-@implementation PTPusher (PTPusher)
+@implementation PTPusher (PTPusher) 
 	NSString const *key = @"my.very.unique.key";
 	- (void)setUserAuth:(NSString *)userAuth
 	{
@@ -22,6 +22,7 @@ void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char
 
 	PTPusher * pusher = [PTPusher pusherWithKey:key delegate:pusher encrypted:YES cluster:@"eu"];
 	pusher.authorizationURL = [NSURL URLWithString:[NSString stringWithUTF8String:authEndpoint]];
+	NSLog(@"pusher authURL: %@", pusher.authorizationURL);
 	pusher.userAuth = [NSString stringWithUTF8String:userAuth];
 	
 	PTPusherChannel *channel = [pusher subscribeToChannelNamed:chan];

@@ -146,6 +146,7 @@ NSURL *PTPusherConnectionURL(NSString *host, NSString *key, NSString *clientID, 
       NSLog(@"DOES IMPLEMENT");
       [strongSelf.delegate pusher:strongSelf willAuthorizeChannel:channel withAuthOperation:op];
     }
+    NSLog(@"DOES NOT IMPLEMENT");
   }];
   self.channelAuthorizationDelegate = serverAuthorizationStrategy;
 }
