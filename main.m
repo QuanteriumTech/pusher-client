@@ -10,15 +10,16 @@
 	- (NSString *) userAuth {
 		return objc_getAssociatedObject(self, &key);
 	}
- 	- (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withAuthOperation:(PTPusherChannelAuthorizationOperation *)operation {
-		NSLog(@"mutating auth");
-		 [operation.mutableURLRequest setValue:pusher.userAuth forHTTPHeaderField:@"Authorization"];
-	}
 @end
 
 @implementation PusherDelegate
 
 #pragma mark - PTPusherEventDelegate methods
+
+- (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withAuthOperation:(PTPusherChannelAuthorizationOperation *)operation {
+	NSLog(@"mutating auth");
+	[operation.mutableURLRequest setValue:pusher.userAuth forHTTPHeaderField:@"Authorization"];
+}
 
 - (void)pusher:(PTPusher *)pusher connectionDidConnect:(PTPusherConnection *)connection
 {
@@ -40,8 +41,9 @@
 void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char * userAuth) {
 	NSString * key =  [NSString stringWithUTF8String:pusherKey];
 	NSString * chan =  [NSString stringWithUTF8String:channelName];
+	PusherDelegate * del = [[PusherDelegate alloc]init];
 
-	PTPusher * pusher = [PTPusher pusherWithKey:key delegate:pusher encrypted:YES cluster:@"eu"];
+	PTPusher * pusher = [PTPusher pusherWithKey:key delegate:del encrypted:YES cluster:@"eu"];
 	pusher.authorizationURL = [NSURL URLWithString:[NSString stringWithUTF8String:authEndpoint]];
 	NSLog(@"pusher authURL: %@", pusher.authorizationURL);
 	pusher.userAuth = [NSString stringWithUTF8String:userAuth];

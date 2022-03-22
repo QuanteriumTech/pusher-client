@@ -14,5 +14,4 @@ void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char
 @end
 
 @interface PusherDelegate : NSObject <PTPusherDelegate>
-	@property (nonatomic, strong) PTPusher *pusher;
 @end
