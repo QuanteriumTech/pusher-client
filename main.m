@@ -16,6 +16,27 @@
 	}
 @end
 
+@implementation PusherDelegate
+
+#pragma mark - PTPusherEventDelegate methods
+
+- (void)pusher:(PTPusher *)pusher connectionDidConnect:(PTPusherConnection *)connection
+{
+    NSLog(@"Connected!");
+}
+
+- (void)pusher:(PTPusher *)pusher connectionDidDisconnect:(PTPusherConnection *)connection
+{
+    NSLog(@"Disconnected!");
+}
+
+- (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection failedWithError:(NSError *)error
+{
+    NSLog(@"Connection Failed! %@", error);
+}
+
+@end
+
 void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char * userAuth) {
 	NSString * key =  [NSString stringWithUTF8String:pusherKey];
 	NSString * chan =  [NSString stringWithUTF8String:channelName];
@@ -24,6 +45,7 @@ void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char
 	pusher.authorizationURL = [NSURL URLWithString:[NSString stringWithUTF8String:authEndpoint]];
 	NSLog(@"pusher authURL: %@", pusher.authorizationURL);
 	pusher.userAuth = [NSString stringWithUTF8String:userAuth];
+	NSLog(@"pusher userAuth: %@", pusher.userAuth);
 	
 	PTPusherChannel *channel = [pusher subscribeToChannelNamed:chan];
 

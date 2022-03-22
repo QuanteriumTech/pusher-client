@@ -10,5 +10,9 @@ void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char
 
 @interface PTPusher (PTPusher) <PTPusherDelegate>
 	@property (strong, nonatomic) NSString *userAuth;
- 	- (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withAuthOperation:(PTPusherChannelAuthorizationOperation *)operation;
+ 	// - (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withAuthOperation:(PTPusherChannelAuthorizationOperation *)operation;
+@end
+
+@interface PusherDelegate : NSObject <PTPusherDelegate>
+	@property (nonatomic, strong) PTPusher *pusher;
 @end
