@@ -60,7 +60,6 @@ func init() {
 func auth(res http.ResponseWriter, req *http.Request) {
 	// this auths anyone - need to ensure that auth header is valid and user has access to requested channel.
 	params, _ := ioutil.ReadAll(req.Body)
-	fmt.Println(req.Header)
 
 	// part 1: Compose auth. Where we need to check the auth token and ensure that it is issued by Compose and matches the user id for the requested channel.
 	// params.auth == user.session.token && params.channel.getUserIDFromChannelName == session.user.id
