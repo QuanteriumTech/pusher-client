@@ -1,5 +1,5 @@
-github.com/QuanteriumTech/pusher-client v0.0.0-20220322094247-2dba3d07d784 h1:bRHBLOny9AooV49adlLv9EmCr5JTC4cbRWA5igxutBU=
-github.com/QuanteriumTech/pusher-client v0.0.0-20220322094247-2dba3d07d784/go.mod h1:sEkUe76gASyMbtcp9KtewiZrSAidXLXCckTY/L8z1Rc=
+github.com/QuanteriumTech/pusher-client v0.0.0-20220322094403-8fef79ed9269 h1:rSKzdPdzwfDZUZ1iphLEWdZYEXgHgYOr9+Bifd9UXgg=
+github.com/QuanteriumTech/pusher-client v0.0.0-20220322094403-8fef79ed9269/go.mod h1:sEkUe76gASyMbtcp9KtewiZrSAidXLXCckTY/L8z1Rc=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
