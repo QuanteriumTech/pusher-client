@@ -22,7 +22,8 @@
 
 - (void)pusher:(PTPusher *)pusher connectionDidConnect:(PTPusherConnection *)connection {
 	NSLog(@"HI 2");
-	updateStatus([@"connected" UTF8String]);
+	const char *cstr = [@"connected" UTF8String];
+	updateStatus(cstr);
 }
 
 - (void)pusher:(PTPusher *)pusher connectionDidDisconnect:(PTPusherConnection *)connection {
@@ -35,11 +36,11 @@
 	updateStatus([[NSString stringWithFormat:@"connection_failed: %@", error] UTF8String]);
 }
 
-// - (BOOL)pusher:(PTPusher *)pusher connectionWillConnect:(PTPusherConnection *)connection {
-	// NSLog(@"HI");
-	// 	updateStatus([@"will_connect" UTF8String]);
-// 	return YES
-// }
+- (BOOL)pusher:(PTPusher *)pusher connectionWillConnect:(PTPusherConnection *)connection {
+	NSLog(@"HI");
+	updateStatus([@"will_connect" UTF8String]);
+	return YES
+}
 
 - (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection didDisconnectWithError:(NSError *)error willAttemptReconnect:(BOOL)willAttemptReconnect {
 	NSLog(@"HI 5");
@@ -48,10 +49,10 @@
 	updateStatus([[NSString stringWithFormat:@"will_reconnect: %@",  willAttemptReconnect ? @"YES" : @"NO"] UTF8String]);
 }
 
-// - (BOOL)pusher:(PTPusher *)pusher connectionWillAutomaticallyReconnect:(PTPusherConnection *)connection afterDelay:(NSTimeInterval)delay {
-// NSLog(@"HI");
-// 	updateStatus([[NSString stringWithFormat:@"connection_will_auto_reconnect: %f", delay] UTF8String]);
-// }
+- (BOOL)pusher:(PTPusher *)pusher connectionWillAutomaticallyReconnect:(PTPusherConnection *)connection afterDelay:(NSTimeInterval)delay {
+	NSLog(@"HI");
+	updateStatus([[NSString stringWithFormat:@"connection_will_auto_reconnect: %f", delay] UTF8String]);
+}
 
 - (void)pusher:(PTPusher *)pusher didSubscribeToChannel:(PTPusherChannel *)channel {
 	NSLog(@"HI 7");
