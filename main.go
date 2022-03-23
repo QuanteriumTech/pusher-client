@@ -9,6 +9,7 @@ var Pusher *pusherController
 
 type pusherController struct {
 	Messages chan string
+	Status   chan string
 }
 
 func init() {
@@ -25,4 +26,10 @@ func (pusher *pusherController) StartPusher(key, authEndpoint, channel, UserAuth
 func receiveMsg(msg *C.char) {
 	goMsg := C.GoString(msg)
 	Pusher.Messages <- goMsg
+}
+
+//export updateStatus
+func updateStatus(msg *C.char) {
+	goMsg := C.GoString(msg)
+	Pusher.Status <- goMsg
 }

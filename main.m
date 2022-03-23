@@ -12,21 +12,53 @@
 @end
 
 @implementation PusherDelegate
+
 - (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withAuthOperation:(PTPusherChannelAuthorizationOperation *)operation {
+	updateStatus([@"authenticating" UTF8String]);
 	[operation.mutableURLRequest setValue:pusher.userAuth forHTTPHeaderField:@"Authorization"];
 }
 
 - (void)pusher:(PTPusher *)pusher connectionDidConnect:(PTPusherConnection *)connection {
-    NSLog(@"Connected!");
+	updateStatus([@"connected" UTF8String]);
 }
 
 - (void)pusher:(PTPusher *)pusher connectionDidDisconnect:(PTPusherConnection *)connection {
-    NSLog(@"Disconnected!");
+	updateStatus([@"disconnected" UTF8String]);
 }
 
 - (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection failedWithError:(NSError *)error {
-    NSLog(@"Connection Failed! %@", error);
+	updateStatus([[NSString stringWithFormat:@"connection_failed: %@", error] UTF8String]);
 }
+
+- (BOOL)pusher:(PTPusher *)pusher connectionWillConnect:(PTPusherConnection *)connection {
+	updateStatus([@"will_connect" UTF8String]);
+}
+
+- (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection didDisconnectWithError:(NSError *)error willAttemptReconnect:(BOOL)willAttemptReconnect {
+	updateStatus([[NSString stringWithFormat:@"disconnected_with_error: %@", error] UTF8String]);
+	updateStatus([[NSString stringWithFormat:@"will_reconnect: %@",  willAttemptReconnect ? @"YES" : @"NO"] UTF8String]);
+}
+
+- (BOOL)pusher:(PTPusher *)pusher connectionWillAutomaticallyReconnect:(PTPusherConnection *)connection afterDelay:(NSTimeInterval)delay {
+	updateStatus([[NSString stringWithFormat:@"connection_will_auto_reconnect: %f", delay] UTF8String]);
+}
+
+- (void)pusher:(PTPusher *)pusher didSubscribeToChannel:(PTPusherChannel *)channel {
+	updateStatus([[NSString stringWithFormat:@"did_subscribe: %@", channel.name] UTF8String]);
+}
+
+- (void)pusher:(PTPusher *)pusher didUnsubscribeFromChannel:(PTPusherChannel *)channel {
+	updateStatus([[NSString stringWithFormat:@"did_unsubscribe: %@", channel.name] UTF8String]);
+}
+
+- (void)pusher:(PTPusher *)pusher didFailToSubscribeToChannel:(PTPusherChannel *)channel withError:(NSError *)error {
+	updateStatus([[NSString stringWithFormat:@"did_fail_to_subscribe: %@ - %@", channel.name, error] UTF8String]);
+}
+
+- (void)pusher:(PTPusher *)pusher didReceiveErrorEvent:(PTPusherErrorEvent *)errorEvent {
+	updateStatus([[NSString stringWithFormat:@"error: %@", errorEvent] UTF8String]);
+}
+
 @end
 
 void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char * userAuth) {
