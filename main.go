@@ -15,6 +15,7 @@ type pusherController struct {
 func init() {
 	Pusher = &pusherController{
 		Messages: make(chan string),
+		Status:   make(chan string),
 	}
 }
 
