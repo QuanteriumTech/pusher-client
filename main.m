@@ -14,7 +14,6 @@
 @implementation PusherDelegate
 
 - (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withAuthOperation:(PTPusherChannelAuthorizationOperation *)operation {
-
 	NSLog(@"HI 1");
 	updateStatus([@"authenticating" UTF8String]);
 	[operation.mutableURLRequest setValue:pusher.userAuth forHTTPHeaderField:@"Authorization"];
@@ -39,7 +38,6 @@
 - (BOOL)pusher:(PTPusher *)pusher connectionWillConnect:(PTPusherConnection *)connection {
 	NSLog(@"HI");
 	updateStatus([@"will_connect" UTF8String]);
-	return YES
 }
 
 - (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection didDisconnectWithError:(NSError *)error willAttemptReconnect:(BOOL)willAttemptReconnect {
