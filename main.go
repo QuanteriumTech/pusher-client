@@ -4,6 +4,7 @@ package pClient
 //#cgo LDFLAGS: -lobjc -framework Foundation -framework CoreServices -framework Security
 //#import <main.h>
 import "C"
+import "fmt"
 
 var Pusher *pusherController
 
@@ -31,6 +32,7 @@ func receiveMsg(msg *C.char) {
 
 //export updateStatus
 func updateStatus(msg *C.char) {
+	fmt.Println("got ms")
 	goMsg := C.GoString(msg)
 	Pusher.Status <- goMsg
 }
