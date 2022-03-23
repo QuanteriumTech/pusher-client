@@ -6,6 +6,8 @@
 #import <PTPusherChannelServerBasedAuthorization.h>
 
 extern void receiveMsg(char* msg);
+extern void updateStatus(char* msg);
+
 void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char * userAuth);
 
 @interface PTPusher (PTPusher)
