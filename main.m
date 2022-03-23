@@ -15,23 +15,23 @@
 
 - (void)pusher:(PTPusher *)pusher willAuthorizeChannel:(PTPusherChannel *)channel withAuthOperation:(PTPusherChannelAuthorizationOperation *)operation {
 
-	NSLog(@"HI");
+	NSLog(@"HI 1");
 	updateStatus([@"authenticating" UTF8String]);
 	[operation.mutableURLRequest setValue:pusher.userAuth forHTTPHeaderField:@"Authorization"];
 }
 
 - (void)pusher:(PTPusher *)pusher connectionDidConnect:(PTPusherConnection *)connection {
-	NSLog(@"HI");
+	NSLog(@"HI 2");
 	updateStatus([@"connected" UTF8String]);
 }
 
 - (void)pusher:(PTPusher *)pusher connectionDidDisconnect:(PTPusherConnection *)connection {
-	NSLog(@"HI");
+	NSLog(@"HI 3");
 	updateStatus([@"disconnected" UTF8String]);
 }
 
 - (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection failedWithError:(NSError *)error {
-	NSLog(@"HI");
+	NSLog(@"HI 4");
 	updateStatus([[NSString stringWithFormat:@"connection_failed: %@", error] UTF8String]);
 }
 
@@ -42,9 +42,9 @@
 // }
 
 - (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection didDisconnectWithError:(NSError *)error willAttemptReconnect:(BOOL)willAttemptReconnect {
-	NSLog(@"HI");
+	NSLog(@"HI 5");
 	updateStatus([[NSString stringWithFormat:@"disconnected_with_error: %@", error] UTF8String]);
-	NSLog(@"HI");
+	NSLog(@"HI 6");
 	updateStatus([[NSString stringWithFormat:@"will_reconnect: %@",  willAttemptReconnect ? @"YES" : @"NO"] UTF8String]);
 }
 
@@ -54,22 +54,22 @@
 // }
 
 - (void)pusher:(PTPusher *)pusher didSubscribeToChannel:(PTPusherChannel *)channel {
-	NSLog(@"HI");
+	NSLog(@"HI 7");
 	updateStatus([[NSString stringWithFormat:@"did_subscribe: %@", channel.name] UTF8String]);
 }
 
 - (void)pusher:(PTPusher *)pusher didUnsubscribeFromChannel:(PTPusherChannel *)channel {
-	NSLog(@"HI");
+	NSLog(@"HI 8");
 	updateStatus([[NSString stringWithFormat:@"did_unsubscribe: %@", channel.name] UTF8String]);
 }
 
 - (void)pusher:(PTPusher *)pusher didFailToSubscribeToChannel:(PTPusherChannel *)channel withError:(NSError *)error {
-	NSLog(@"HI");
+	NSLog(@"HI 9");
 	updateStatus([[NSString stringWithFormat:@"did_fail_to_subscribe: %@ - %@", channel.name, error] UTF8String]);
 }
 
 - (void)pusher:(PTPusher *)pusher didReceiveErrorEvent:(PTPusherErrorEvent *)errorEvent {
-	NSLog(@"HI");
+	NSLog(@"HI 10");
 	updateStatus([[NSString stringWithFormat:@"error: %@", errorEvent] UTF8String]);
 }
 
