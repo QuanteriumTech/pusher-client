@@ -34,12 +34,6 @@ func main() {
 		}
 	}()
 
-	go sp()
-
-	<-ch
-}
-
-func sp() {
 	pClient.Pusher.StartPusher(
 		"3d41671bd9378ccdd519",              //pusher env id (this is dev)
 		"http://127.0.0.1:8090/pusher/auth", //authentication endpoint in capi
@@ -47,7 +41,7 @@ func sp() {
 		"auth",                              // user auth token issued by Compose
 	)
 
-	fmt.Println("STARTED PUSHER")
+	<-ch
 }
 
 // ---------- Go Server ----------
