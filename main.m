@@ -62,14 +62,50 @@
 	updateStatus([[NSString stringWithFormat:@"error: %@", errorEvent] UTF8String]);
 }
 
+- (void)handleNewMessageEvent:(PTPusherEvent *)event{
+	NSError *error = nil;
+	NSData* jsonData = [NSJSONSerialization dataWithJSONObject:event.data options:NSJSONWritingPrettyPrinted error:&error];
+	NSString * newStr =[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+	const char *cstr = [newStr UTF8String];
+	receiveMsg(cstr);
+}
+
 @end
 
 static PusherDelegate * del = nil;
 static PTPusher * pusher = nil;
 static PTPusherChannel * channel = nil;
 static PTPusherEventBinding * bind = nil;
+static dispatch_queue_t recordingQueue = nil;
+static NSRunLoop *theRL = nil;
 
 void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char * userAuth) {
+	CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(NULL, kCFRunLoopAllActivities, YES, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity activity){
+		switch (activity) {
+        case kCFRunLoopEntry:
+             NSLog(@"1 -activity: %f", activity);
+             break;       
+        case kCFRunLoopBeforeTimers:
+             NSLog(@"2 -activity: %f", activity);
+             break;
+        case kCFRunLoopBeforeSources:
+            NSLog(@"3 -activity: %f", activity);
+             break;
+        case kCFRunLoopBeforeWaiting:
+             NSLog(@"4 -activity: %f", activity);
+             break;
+        case kCFRunLoopAfterWaiting:
+            NSLog(@"5 -activity: %f", activity);
+             break;
+        case kCFRunLoopExit:
+             NSLog(@"6 -activity: %f", activity);
+             break;
+        default:
+            break;
+    }
+   	});
+   	CFRunLoopAddObserver(CFRunLoopGetCurrent(), observer, kCFRunLoopCommonModes);
+
 	NSString * key =  [NSString stringWithUTF8String:pusherKey];
 	NSString * chan =  [NSString stringWithUTF8String:channelName];
 	
@@ -78,6 +114,9 @@ void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char
 	pusher = [PTPusher pusherWithKey:key delegate:del encrypted:YES cluster:@"eu"];
 	pusher.authorizationURL = [NSURL URLWithString:[NSString stringWithUTF8String:authEndpoint]];
 	pusher.userAuth = [NSString stringWithUTF8String:userAuth];
+
+	// dispatch_queue_attr_t qos =  dispatch_queue_attr_make_with_autorelease_frequency(DISPATCH_QUEUE_SERIAL, DISPATCH_AUTORELEASE_FREQUENCY_NEVER);
+	// recordingQueue = dispatch_queue_create("recordingQueue", qos);
 	
 	channel = [pusher subscribeToChannelNamed:chan];
 	bind = [channel bindToEventNamed:@"my-event" handleWithBlock:^(PTPusherEvent *channelEvent) {
@@ -87,9 +126,19 @@ void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char
 		const char *cstr = [newStr UTF8String];
 		receiveMsg(cstr);
 	}];
+	// } queue: recordingQueue];
 
+	// [channel bindToEventNamed:@"my-event" target:del action:@selector(handleNewMessageEvent:)];
 	[pusher connect];
 	
-	NSRunLoop *theRL = [NSRunLoop currentRunLoop];
-	[theRL run];
+	// theRL = [NSRunLoop mainRunLoop];
+	theRL = [NSRunLoop currentRunLoop];
+	// [theRL run];
+
+	[theRL performSelectorOnMainThread: @selector(run)
+                    	withObject:nil 
+						waitUntilDone:YES];
+
+    
+	NSLog(@"OOOOPS");
 }
