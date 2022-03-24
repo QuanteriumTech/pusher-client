@@ -31,14 +31,18 @@ func main() {
 	go func() {
 		for msg := range pClient.Pusher.Status {
 			fmt.Println(msg)
+			if msg == "connected" {
+				go pClient.Pusher.SubscribeToChannel(
+					"private-my-channel", // channel name
+					"auth",               // user auth token issued by Compose
+				)
+			}
 		}
 	}()
 
 	pClient.Pusher.StartPusher(
 		"3d41671bd9378ccdd519",              //pusher env id (this is dev)
 		"http://127.0.0.1:8090/pusher/auth", //authentication endpoint in capi
-		"private-my-channel",                // channel name
-		"auth",                              // user auth token issued by Compose
 	)
 
 	<-ch
