@@ -69,17 +69,21 @@ static PTPusher * pusher = nil;
 static PTPusherChannel * channel = nil;
 static PTPusherEventBinding * bind = nil;
 
-void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char * userAuth) {
-	NSString * key =  [NSString stringWithUTF8String:pusherKey];
-	NSString * chan =  [NSString stringWithUTF8String:channelName];
-	
+void startPusher(char * pusherKey, char * authEndpoint) {
 	del = [[PusherDelegate alloc] init];
-
-	pusher = [PTPusher pusherWithKey:key delegate:del encrypted:YES cluster:@"eu"];
+	pusher = [PTPusher pusherWithKey:[NSString stringWithUTF8String:pusherKey] delegate:del encrypted:YES cluster:@"eu"];
 	pusher.authorizationURL = [NSURL URLWithString:[NSString stringWithUTF8String:authEndpoint]];
-	pusher.userAuth = [NSString stringWithUTF8String:userAuth];
 	
-	channel = [pusher subscribeToChannelNamed:chan];
+	[pusher connect];
+	
+	NSRunLoop *theRL = [NSRunLoop currentRunLoop];
+	[theRL run];
+}
+
+void subscribeToChannel(char * channelName , char * userAuth) {
+	pusher.userAuth = [NSString stringWithUTF8String:userAuth];
+
+	channel = [pusher subscribeToChannelNamed:[NSString stringWithUTF8String:channelName]];
 	bind = [channel bindToEventNamed:@"my-event" handleWithBlock:^(PTPusherEvent *channelEvent) {
 		NSError *error = nil;
 		NSData* jsonData = [NSJSONSerialization dataWithJSONObject:channelEvent.data options:NSJSONWritingPrettyPrinted error:&error];
@@ -87,9 +91,4 @@ void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char
 		const char *cstr = [newStr UTF8String];
 		receiveMsg(cstr);
 	}];
-
-	[pusher connect];
-	
-	NSRunLoop *theRL = [NSRunLoop currentRunLoop];
-	[theRL run];
 }

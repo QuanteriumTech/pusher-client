@@ -19,8 +19,12 @@ func init() {
 	}
 }
 
-func (pusher *pusherController) StartPusher(key, authEndpoint, channel, UserAuth string) {
-	C.startPusher(C.CString(key), C.CString(authEndpoint), C.CString(channel), C.CString(UserAuth))
+func (pusher *pusherController) StartPusher(key, authEndpoint string) {
+	C.startPusher(C.CString(key), C.CString(authEndpoint))
+}
+
+func (pusher *pusherController) SubscribeToChannel(channel, UserAuth string) {
+	C.subscribeToChannel(C.CString(channel), C.CString(UserAuth))
 }
 
 //export receiveMsg

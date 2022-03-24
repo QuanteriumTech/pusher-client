@@ -8,7 +8,8 @@
 extern void receiveMsg(char* msg);
 extern void updateStatus(char* msg);
 
-void startPusher(char * pusherKey, char * authEndpoint, char * channelName, char * userAuth);
+void startPusher(char * pusherKey, char * authEndpoint);
+void subscribeToChannel(char * channelName, char * userAuth);
 
 @interface PTPusher (PTPusher)
 	@property (strong, nonatomic) NSString *userAuth;
