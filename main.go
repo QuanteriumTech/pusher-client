@@ -27,6 +27,10 @@ func (pusher *pusherController) SubscribeToChannel(channel, UserAuth string) {
 	C.subscribeToChannel(C.CString(channel), C.CString(UserAuth))
 }
 
+func (pusher *pusherController) UnsubscribeFromChannel() {
+	C.unsubscribeFromChannel()
+}
+
 //export receiveMsg
 func receiveMsg(msg *C.char) {
 	goMsg := C.GoString(msg)

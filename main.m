@@ -92,3 +92,7 @@ void subscribeToChannel(char * channelName , char * userAuth) {
 		receiveMsg(cstr);
 	}];
 }
+
+void unsubscribeFromChannel() {
+	[channel unsubscribe];
+}
