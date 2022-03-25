@@ -40,6 +40,12 @@ func main() {
 		}
 	}()
 
+	go func() {
+		time.Sleep(10 * time.Second)
+		fmt.Println("Unsubbing")
+		pClient.Pusher.UnsubscribeFromChannel()
+	}()
+
 	pClient.Pusher.StartPusher(
 		"3d41671bd9378ccdd519",              //pusher env id (this is dev)
 		"http://127.0.0.1:8090/pusher/auth", //authentication endpoint in capi
@@ -66,7 +72,12 @@ func init() {
 	}()
 	go func() {
 		time.Sleep(5 * time.Second)
-		send()
+		send("hello world")
+	}()
+
+	go func() {
+		time.Sleep(15 * time.Second)
+		send("hi?")
 	}()
 }
 
@@ -87,8 +98,8 @@ func auth(res http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(res, string(response))
 }
 
-func send() {
+func send(msg string) {
 	fmt.Println("Gonna send event")
-	data := map[string]string{"message": "hello world"}
+	data := map[string]string{"message": msg}
 	pusherClient.Trigger("private-my-channel", "my-event", data)
 }
