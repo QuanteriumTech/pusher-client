@@ -69,10 +69,9 @@ static PTPusher * pusher = nil;
 static PTPusherChannel * channel = nil;
 static PTPusherEventBinding * bind = nil;
 
-void startPusher(char * pusherKey, char * authEndpoint) {
+void startPusher(char * pusherKey) {
 	del = [[PusherDelegate alloc] init];
 	pusher = [PTPusher pusherWithKey:[NSString stringWithUTF8String:pusherKey] delegate:del encrypted:YES cluster:@"eu"];
-	pusher.authorizationURL = [NSURL URLWithString:[NSString stringWithUTF8String:authEndpoint]];
 	
 	[pusher connect];
 	
@@ -80,8 +79,9 @@ void startPusher(char * pusherKey, char * authEndpoint) {
 	[theRL run];
 }
 
-void subscribeToChannel(char * channelName , char * userAuth) {
+void subscribeToChannel(char * channelName , char * userAuth,  char * authEndpoint) {
 	pusher.userAuth = [NSString stringWithUTF8String:userAuth];
+	pusher.authorizationURL = [NSURL URLWithString:[NSString stringWithUTF8String:authEndpoint]];
 
 	channel = [pusher subscribeToChannelNamed:[NSString stringWithUTF8String:channelName]];
 	bind = [channel bindToEventNamed:@"my-event" handleWithBlock:^(PTPusherEvent *channelEvent) {
