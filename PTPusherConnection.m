@@ -32,7 +32,7 @@ NSString *const PTPusherConnectionPongEvent        = @"pusher:pong";
 {
   if ((self = [super init])) {
     request = [NSURLRequest requestWithURL:aURL];
-    
+    updateStatus([@"[pusher - conn] Debug logging enabled" UTF8String]);
 #ifdef DEBUG
     NSLog(@"[pusher] Debug logging enabled");
 #endif
@@ -142,6 +142,7 @@ NSString *const PTPusherConnectionPongEvent        = @"pusher:pong";
   PTPusherEvent *event = [PTPusherEvent eventFromMessageDictionary:messageDictionary];
   
   if ([event.name isEqualToString:PTPusherConnectionPongEvent]) {
+    updateStatus([@"[pusher - conn] Server responded to ping (pong!)" UTF8String]);
 #ifdef DEBUG
     NSLog(@"[pusher] Server responded to ping (pong!)");
 #endif
@@ -176,6 +177,7 @@ NSString *const PTPusherConnectionPongEvent        = @"pusher:pong";
 
 - (void)handleActivityTimeout
 {
+  updateStatus([@"[pusher - conn] Pusher connection activity timeout reached, sending ping to server" UTF8String]);
 #ifdef DEBUG
   NSLog(@"[pusher] Pusher connection activity timeout reached, sending ping to server");
 #endif
@@ -187,6 +189,7 @@ NSString *const PTPusherConnectionPongEvent        = @"pusher:pong";
 
 - (void)handlePongTimeout
 {
+  updateStatus([@"[pusher - conn] Server did not respond to ping within timeout, disconnecting" UTF8String]);
 #ifdef DEBUG
   NSLog(@"[pusher] Server did not respond to ping within timeout, disconnecting");
 #endif
