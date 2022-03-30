@@ -21,7 +21,7 @@
 @end
 
 @interface PTPusherChannel ()
-@property (nonatomic) PTPusher *pusher;
+@property (nonatomic, weak) PTPusher *pusher;
 @property (nonatomic, strong) PTPusherEventDispatcher *dispatcher;
 @property (nonatomic, assign, readwrite) BOOL subscribed;
 @property (nonatomic, readonly) NSMutableArray *internalBindings;
@@ -57,7 +57,7 @@
      Using a target-action binding will create a retain cycle between the channel
      and the target/action binding object.
      */
-    PTPusherChannel *weakChannel = self;
+    __weak PTPusherChannel *weakChannel = self;
 
     [self.internalBindings addObject:
      [self bindToEventNamed:@"pusher_internal:subscription_succeeded"
@@ -241,7 +241,7 @@
     eventName = [@"client-" stringByAppendingString:eventName];
   }
 
-  PTPusherChannel *weakSelf = self;
+  __weak PTPusherChannel *weakSelf = self;
 
   [_clientEventQueue addOperationWithBlock:^{
     [weakSelf.pusher sendEventNamed:eventName data:eventData channel:weakSelf.name];
@@ -273,7 +273,7 @@
     /* Set up event handlers for pre-defined channel events.
      As above, use blocks as proxies to a weak channel reference to avoid retain cycles.
      */
-      PTPusherPresenceChannel *weakChannel = self;
+      __weak PTPusherPresenceChannel *weakChannel = self;
 
     [self.internalBindings addObject:
      [self bindToEventNamed:@"pusher_internal:member_added"
