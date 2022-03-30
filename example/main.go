@@ -19,6 +19,7 @@ type Message struct {
 }
 
 func main() {
+	connected := false
 	ch := make(chan interface{})
 	// bridge
 	go func() {
@@ -31,24 +32,25 @@ func main() {
 	go func() {
 		for msg := range pClient.Pusher.Status {
 			fmt.Println(msg)
-			if msg == "connected" {
+			if msg == "connected" && !connected {
+				connected = true
 				go pClient.Pusher.SubscribeToChannel(
-					"private-my-channel", // channel name
-					"auth",               // user auth token issued by Compose
+					"private-my-channel",                // channel name
+					"auth",                              // user auth token issued by Compose
+					"http://127.0.0.1:8090/pusher/auth", //authentication endpoint in capi
 				)
 			}
 		}
 	}()
 
-	go func() {
-		time.Sleep(10 * time.Second)
-		fmt.Println("Unsubbing")
-		pClient.Pusher.UnsubscribeFromChannel()
-	}()
+	// go func() {
+	// 	time.Sleep(10 * time.Second)
+	// 	fmt.Println("Unsubbing")
+	// 	pClient.Pusher.UnsubscribeFromChannel()
+	// }()
 
 	pClient.Pusher.StartPusher(
-		"3d41671bd9378ccdd519",              //pusher env id (this is dev)
-		"http://127.0.0.1:8090/pusher/auth", //authentication endpoint in capi
+		"abc", //pusher env id (this is dev)
 	)
 
 	<-ch
@@ -60,9 +62,9 @@ var pusherClient *pusherLib.Client
 
 func init() {
 	pusherClient = &pusherLib.Client{
-		AppID:   "1363149",
-		Key:     "3d41671bd9378ccdd519",
-		Secret:  "a5fc1c91d9507fd9e7bd",
+		AppID:   "1234",
+		Key:     "abc",
+		Secret:  "shush!",
 		Cluster: "eu",
 		Secure:  true,
 	}
