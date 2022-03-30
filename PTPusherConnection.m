@@ -11,6 +11,7 @@
 #define SR_ENABLE_LOG
 #import <SRWebSocket.h>
 #import "PTJSON.h"
+#import "main.h"
 
 NSString *const PTPusherConnectionEstablishedEvent = @"pusher:connection_established";
 NSString *const PTPusherConnectionPingEvent        = @"pusher:ping";
