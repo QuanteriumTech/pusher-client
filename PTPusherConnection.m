@@ -39,8 +39,8 @@ NSString *const PTPusherConnectionPongEvent        = @"pusher:pong";
 #endif
     
     // Timeout defaults as recommended by the Pusher protocol documentation.
-    self.activityTimeout = 120.0;
-    self.pongTimeout = 30.0;
+    self.activityTimeout = 10.0;
+    self.pongTimeout = 5.0;
   }
   return self;
 }
