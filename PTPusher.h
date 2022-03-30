@@ -88,7 +88,7 @@ extern NSString *const PTPusherErrorUnderlyingEventKey;
 
  The delegate must implement the PTPusherDelegate protocol. The delegate is not retained.
  */
-@property (nonatomic) id<PTPusherDelegate> delegate;
+@property (nonatomic, weak) id<PTPusherDelegate> delegate;
 
 /** Specifies the delay between reconnection attempts. Defaults to 5 seconds.
  *
@@ -136,7 +136,7 @@ extern NSString *const PTPusherErrorUnderlyingEventKey;
  *
  * @see PTPusherChannelAuthorizationDelegate
  */
-@property (nonatomic) id<PTPusherChannelAuthorizationDelegate> channelAuthorizationDelegate;
+@property (nonatomic, weak) id<PTPusherChannelAuthorizationDelegate> channelAuthorizationDelegate;
 
 ///------------------------------------------------------------------------------------/
 /// @name Creating new instances

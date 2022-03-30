@@ -10,7 +10,7 @@
 
 @interface PTURLRequestOperationURLSessionDelegate : NSObject <NSURLSessionDelegate, NSURLSessionDataDelegate>
 
-@property (nonatomic, readwrite) id<NSURLSessionDelegate, NSURLSessionDataDelegate> delegate;
+@property (nonatomic, weak, readwrite) id<NSURLSessionDelegate, NSURLSessionDataDelegate> delegate;
 
 @end
 

@@ -33,7 +33,7 @@ typedef enum {
 
 @interface PTPusherConnection : NSObject
 
-@property (nonatomic) id<PTPusherConnectionDelegate> delegate;
+@property (nonatomic, weak) id<PTPusherConnectionDelegate> delegate;
 
 /** Indicates if the connection is connected to the Pusher service.
  

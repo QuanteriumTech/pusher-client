@@ -134,7 +134,7 @@ NSURL *PTPusherConnectionURL(NSString *host, NSString *key, NSString *clientID, 
 
   serverAuthorizationStrategy = [[PTPusherChannelServerBasedAuthorization alloc] initWithAuthorizationURL:authorizationURL];
 
-  PTPusher *weakSelf = self;
+  __weak PTPusher *weakSelf = self;
 
   // use this to support our current delegate-based API for HTTP authorization
   [serverAuthorizationStrategy customizeOperationsWithBlock:^(PTPusherChannelAuthorizationOperation *op, PTPusherChannel *channel) {
