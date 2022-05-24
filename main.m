@@ -2,20 +2,20 @@
 #import <objc/runtime.h>
 
 @implementation PTPusher (PTPusher) 
-	NSString const *key = @"user.auth";
+	NSString const *authKey = @"user.auth";
 	- (void)setUserAuth:(NSString *)userAuth {
-    	objc_setAssociatedObject(self, &key, userAuth, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    	objc_setAssociatedObject(self, &authKey, userAuth, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	- (NSString *) userAuth {
-		return objc_getAssociatedObject(self, &key);
+		return objc_getAssociatedObject(self, &authKey);
 	}
 
-	NSString const *key = @"channel.name";
-	- (void)setUserAuth:(NSString *)channelName {
-    	objc_setAssociatedObject(self, &key, channelName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	NSString const *channelKey = @"channel.name";
+	- (void)setChannelName:(NSString *)channelName {
+    	objc_setAssociatedObject(self, &channelKey, channelName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	- (NSString *) channelName {
-		return objc_getAssociatedObject(self, &key);
+		return objc_getAssociatedObject(self, &channelKey);
 	}
 @end
 
