@@ -2,11 +2,19 @@
 #import <objc/runtime.h>
 
 @implementation PTPusher (PTPusher) 
-	NSString const *key = @"my.very.unique.key";
+	NSString const *key = @"user.auth";
 	- (void)setUserAuth:(NSString *)userAuth {
     	objc_setAssociatedObject(self, &key, userAuth, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	- (NSString *) userAuth {
+		return objc_getAssociatedObject(self, &key);
+	}
+
+	NSString const *key = @"channel.name";
+	- (void)setUserAuth:(NSString *)channelName {
+    	objc_setAssociatedObject(self, &key, channelName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	- (NSString *) channelName {
 		return objc_getAssociatedObject(self, &key);
 	}
 @end
@@ -29,6 +37,8 @@
 
 - (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection failedWithError:(NSError *)error {
 	updateStatus([[NSString stringWithFormat:@"connection_failed: %@", error] UTF8String]);
+	[NSThread sleepForTimeInterval:1.0f];
+	[pusher connect];
 }
 
 - (BOOL)pusher:(PTPusher *)pusher connectionWillConnect:(PTPusherConnection *)connection {
@@ -39,6 +49,11 @@
 - (void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection didDisconnectWithError:(NSError *)error willAttemptReconnect:(BOOL)willAttemptReconnect {
 	updateStatus([[NSString stringWithFormat:@"disconnected_with_error: %@", error] UTF8String]);
 	updateStatus([[NSString stringWithFormat:@"will_reconnect: %@",  willAttemptReconnect ? @"YES" : @"NO"] UTF8String]);
+	
+	if (willAttemptReconnect) {
+		[NSThread sleepForTimeInterval:1.0f];
+		[pusher connect];
+	}
 }
 
 - (BOOL)pusher:(PTPusher *)pusher connectionWillAutomaticallyReconnect:(PTPusherConnection *)connection afterDelay:(NSTimeInterval)delay {
@@ -79,11 +94,16 @@ void startPusher(char * pusherKey) {
 	[theRL run];
 }
 
+void reconnectPusher() {
+	[pusher connect];
+}
+
 void subscribeToChannel(char * channelName , char * userAuth,  char * authEndpoint) {
 	pusher.userAuth = [NSString stringWithUTF8String:userAuth];
 	pusher.authorizationURL = [NSURL URLWithString:[NSString stringWithUTF8String:authEndpoint]];
+	pusher.channelName = [NSString stringWithUTF8String:channelName];
 
-	channel = [pusher subscribeToChannelNamed:[NSString stringWithUTF8String:channelName]];
+	channel = [pusher subscribeToChannelNamed:pusher.channelName];
 	bind = [channel bindToEventNamed:@"my-event" handleWithBlock:^(PTPusherEvent *channelEvent) {
 		NSError *error = nil;
 		NSData* jsonData = [NSJSONSerialization dataWithJSONObject:channelEvent.data options:NSJSONWritingPrettyPrinted error:&error];

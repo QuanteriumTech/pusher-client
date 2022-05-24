@@ -50,7 +50,7 @@ func main() {
 	// }()
 
 	pClient.Pusher.StartPusher(
-		"abc", //pusher env id (this is dev)
+		"35a3292001020a6d2bed", //pusher env id (this is dev)
 	)
 
 	<-ch
@@ -62,9 +62,9 @@ var pusherClient *pusherLib.Client
 
 func init() {
 	pusherClient = &pusherLib.Client{
-		AppID:   "1234",
-		Key:     "abc",
-		Secret:  "shush!",
+		AppID:   "1363149",
+		Key:     "35a3292001020a6d2bed",
+		Secret:  "da1f78ed679b447a5faa",
 		Cluster: "eu",
 		Secure:  true,
 	}
