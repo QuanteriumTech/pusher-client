@@ -90,7 +90,7 @@ void subscribeToChannel(char * channelName , char * userAuth,  char * authEndpoi
 	pusher.userAuth = [NSString stringWithUTF8String:userAuth];
 	pusher.authorizationURL = [NSURL URLWithString:[NSString stringWithUTF8String:authEndpoint]];
 
-	channel = [pusher subscribeToChannelNamed:[NSString stringWithUTF8String:channelName];];
+	channel = [pusher subscribeToChannelNamed:[NSString stringWithUTF8String:channelName]];
 	bind = [channel bindToEventNamed:@"my-event" handleWithBlock:^(PTPusherEvent *channelEvent) {
 		NSError *error = nil;
 		NSData* jsonData = [NSJSONSerialization dataWithJSONObject:channelEvent.data options:NSJSONWritingPrettyPrinted error:&error];
