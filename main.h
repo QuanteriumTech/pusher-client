@@ -14,6 +14,7 @@ void unsubscribeFromChannel();
 
 @interface PTPusher (PTPusher)
 	@property (strong, nonatomic) NSString *userAuth;
+	@property (strong, nonatomic) NSString *channelName;
 @end
 
 @interface PusherDelegate : NSObject <PTPusherDelegate>

@@ -9,6 +9,14 @@
 	- (NSString *) userAuth {
 		return objc_getAssociatedObject(self, &authKey);
 	}
+
+	NSString const *channelNameKey = @"channel.name";
+	- (void)setChannelName:(NSString *)channelName {
+    	objc_setAssociatedObject(self, &channelNameKey, channelName, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	- (NSString *) channelName {
+		return objc_getAssociatedObject(self, &channelNameKey);
+	}
 @end
 
 @implementation PusherDelegate
@@ -31,6 +39,10 @@
 	updateStatus([[NSString stringWithFormat:@"connection_failed: %@", error] UTF8String]);
 	[NSThread sleepForTimeInterval:1.0f];
 	[pusher connect];
+	// if pusher.channelName has been set, then we are trying to subscribe to a channel.
+	if (pusher.channelName) {
+		[pusher subscribeToChannelNamed:pusher.channelName];
+	}
 }
 
 - (BOOL)pusher:(PTPusher *)pusher connectionWillConnect:(PTPusherConnection *)connection {
@@ -45,6 +57,10 @@
 	if (!willAttemptReconnect) {
 		[NSThread sleepForTimeInterval:1.0f];
 		[pusher connect];
+		// if pusher.channelName has been set, then we are trying to subscribe to a channel.
+		if (pusher.channelName) {
+			[pusher subscribeToChannelNamed:pusher.channelName];
+		}
 	}
 }
 
@@ -89,8 +105,9 @@ void startPusher(char * pusherKey) {
 void subscribeToChannel(char * channelName , char * userAuth,  char * authEndpoint) {
 	pusher.userAuth = [NSString stringWithUTF8String:userAuth];
 	pusher.authorizationURL = [NSURL URLWithString:[NSString stringWithUTF8String:authEndpoint]];
+	pusher.channelName = [NSString stringWithUTF8String:channelName];
 
-	channel = [pusher subscribeToChannelNamed:[NSString stringWithUTF8String:channelName]];
+	channel = [pusher subscribeToChannelNamed: pusher.channelName];
 	bind = [channel bindToEventNamed:@"my-event" handleWithBlock:^(PTPusherEvent *channelEvent) {
 		NSError *error = nil;
 		NSData* jsonData = [NSJSONSerialization dataWithJSONObject:channelEvent.data options:NSJSONWritingPrettyPrinted error:&error];
