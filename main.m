@@ -40,7 +40,7 @@
 	[NSThread sleepForTimeInterval:1.0f];
 	[pusher connect];
 	// if pusher.channelName has been set, then we are trying to subscribe to a channel.
-	if (pusher.channelName) {
+	if ([pusher.channelName length] != 0) {
 		[pusher subscribeToChannelNamed:pusher.channelName];
 	}
 }
@@ -58,7 +58,7 @@
 		[NSThread sleepForTimeInterval:1.0f];
 		[pusher connect];
 		// if pusher.channelName has been set, then we are trying to subscribe to a channel.
-		if (pusher.channelName) {
+		if ([pusher.channelName length] != 0) {
 			[pusher subscribeToChannelNamed:pusher.channelName];
 		}
 	}
