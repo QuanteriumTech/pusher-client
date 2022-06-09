@@ -11,6 +11,7 @@ extern void updateStatus(char* msg);
 void startPusher(char * pusherKey);
 void subscribeToChannel(char * channelName, char * userAuth, char * authEndpoint);
 void unsubscribeFromChannel();
+void reconnect();
 
 @interface PTPusher (PTPusher)
 	@property (strong, nonatomic) NSString *userAuth;

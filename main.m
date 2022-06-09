@@ -120,3 +120,10 @@ void subscribeToChannel(char * channelName , char * userAuth,  char * authEndpoi
 void unsubscribeFromChannel() {
 	[channel unsubscribe];
 }
+
+void reconnect() {
+	[pusher connect];
+	if ([pusher.channelName length] != 0) {
+		[pusher subscribeToChannelNamed:pusher.channelName];
+	}
+}

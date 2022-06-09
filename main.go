@@ -31,6 +31,10 @@ func (pusher *pusherController) UnsubscribeFromChannel() {
 	C.unsubscribeFromChannel()
 }
 
+func (pusher *pusherController) Reconnect() {
+	C.reconnect()
+}
+
 //export receiveMsg
 func receiveMsg(msg *C.char) {
 	goMsg := C.GoString(msg)
